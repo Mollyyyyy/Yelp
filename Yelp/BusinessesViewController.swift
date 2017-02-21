@@ -21,10 +21,11 @@ UITableViewDelegate,UISearchBarDelegate{
         tableView.delegate=self
         tableView.dataSource=self
         searchBar.delegate = self
+        self.navigationItem.titleView = searchBar
         tableView.estimatedRowHeight = 120
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: "Sushi", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
             self.searchBusinesses = self.businesses
@@ -38,7 +39,7 @@ UITableViewDelegate,UISearchBarDelegate{
             
             }
         )
-        
+
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
          self.businesses = businesses

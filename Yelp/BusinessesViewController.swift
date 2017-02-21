@@ -9,7 +9,7 @@
 import UIKit
 
 class BusinessesViewController: UIViewController,UITableViewDataSource,
-UITableViewDelegate,UISearchBarDelegate{
+UITableViewDelegate,UISearchBarDelegate/*FiltersViewControllerDelegate*/{
     
     var businesses: [Business]!
     var searchBusinesses: [Business]!
@@ -25,7 +25,7 @@ UITableViewDelegate,UISearchBarDelegate{
         tableView.estimatedRowHeight = 120
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        Business.searchWithTerm(term: "Sushi", completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: "restaurant", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
             self.searchBusinesses = self.businesses
@@ -93,14 +93,26 @@ UITableViewDelegate,UISearchBarDelegate{
         searchBar.resignFirstResponder()
         viewDidLoad()
     }
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    /* override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let navigationController = segue.destination.topLayoutGuide as! FiltersViewController
+        let filtersViewController = navigationController.topLayoutGuide as! FiltersViewController
+        filtersViewController.delegate = self
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
      }
-     */
+    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilter filters: [String : AnyObject]) {
+        var categories = filters["categories"] as! [String]
+        Business.searchWithTerm(term: "restaurant", completion: { (businesses: [Business]?, error: Error?) -> Void in
+            self.businesses = businesses
+            self.tableView.reloadData()
+        
+        }
+        )
+
+    }*/
     
 }

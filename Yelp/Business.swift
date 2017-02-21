@@ -16,7 +16,7 @@ class Business: NSObject {
     let distance: String?
     let ratingImageURL: URL?
     let reviewCount: NSNumber?
-    
+    let categoriesArray:[[String]]?
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
         
@@ -45,7 +45,7 @@ class Business: NSObject {
         }
         self.address = address
         
-        let categoriesArray = dictionary["categories"] as? [[String]]
+        categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {
             var categoryNames = [String]()
             for category in categoriesArray! {

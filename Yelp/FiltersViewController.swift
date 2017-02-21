@@ -8,21 +8,32 @@
 //
 
 import UIKit
-
-class FiltersViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+@objc protocol FiltersViewControllerDelegate {
+    func filtersViewController(filtersViewController: FiltersViewController,didUpdateFilter filters:[String:AnyObject])
+}
+class FiltersViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,SwitchCellDelegate {
 
     var businesses: [Business]!
-    var categories:[String] = []
-    
+    weak var delegate: FiltersViewControllerDelegate?
+    var switchStates = [Int:Bool]()
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate=self
         tableView.dataSource=self
         self.tableView.reloadData()
-        // Do any additional setup after loading the view.
-    }
+        Business.searchWithTerm(term: "restaurant", completion: { (businesses: [Business]?, error: Error?) -> Void in
+            self.businesses = businesses
+            self.tableView.reloadData()
+            if let businesses = businesses {
+                for business in businesses {
+                    print(business.categories!)
+                }
+            }
+        }
+        )
 
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -33,16 +44,30 @@ class FiltersViewController: UIViewController,UITableViewDataSource,UITableViewD
     
     @IBAction func onSearchButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+        var filters = [String: AnyObject]()
+        delegate?.filtersViewController(filtersViewController: self, didUpdateFilter: filters)
+        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return categories.count
-   
-
+        if businesses != nil{
+            return businesses.count
+        }
+        else{
+            return 0
+        }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
-        cell.switchLabel.text = categories[indexPath.row]
+        cell.switchLabel.text = businesses[indexPath.row].categories as String!
+        cell.delegate = self
+        cell.onSwitch.isOn = switchStates[indexPath.row] ?? false
         return cell
+    }
+    
+    func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {
+        let indexPath = tableView.indexPath(for: switchCell)!
+        switchStates[indexPath.row] = value
+        print( "fiters got the switch event")
     }
     /*
     // MARK: - Navigation

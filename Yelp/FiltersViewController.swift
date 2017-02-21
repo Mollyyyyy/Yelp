@@ -46,7 +46,13 @@ class FiltersViewController: UIViewController,UITableViewDataSource,UITableViewD
         dismiss(animated: true, completion: nil)
         var filters = [String: AnyObject]()
         delegate?.filtersViewController(filtersViewController: self, didUpdateFilter: filters)
-        
+        var selectedCategories = [String]()
+        for (row,isSelected) in switchStates{
+            if isSelected{selectedCategories.append(businesses[row].categories!)}
+        }
+        if selectedCategories.count > 0{
+            filters["categories"] = selectedCategories as AnyObject?
+        }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if businesses != nil{

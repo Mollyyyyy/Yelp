@@ -9,7 +9,7 @@
 import UIKit
 
 class BusinessesViewController: UIViewController,UITableViewDataSource,
-UITableViewDelegate,UISearchBarDelegate/*FiltersViewControllerDelegate*/{
+UITableViewDelegate,UISearchBarDelegate,FiltersViewControllerDelegate{
     
     var businesses: [Business]!
     var searchBusinesses: [Business]!
@@ -97,9 +97,9 @@ UITableViewDelegate,UISearchBarDelegate/*FiltersViewControllerDelegate*/{
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-    /* override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let navigationController = segue.destination.topLayoutGuide as! FiltersViewController
-        let filtersViewController = navigationController.topLayoutGuide as! FiltersViewController
+    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let navigationController = segue.destination as! FiltersViewController
+        let filtersViewController = navigationController as! FiltersViewController
         filtersViewController.delegate = self
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
@@ -113,6 +113,6 @@ UITableViewDelegate,UISearchBarDelegate/*FiltersViewControllerDelegate*/{
         }
         )
 
-    }*/
+    }
     
 }
